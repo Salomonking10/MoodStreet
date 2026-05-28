@@ -1,4 +1,4 @@
 window.SUPABASE_CONFIG = {
-  url: "PEGA_AQUI_TU_SUPABASE_URL",
-  anonKey: "PEGA_AQUI_TU_SUPABASE_ANON_KEY"
+  url: "https://keovfwubiuvrydmkbgrs.supabase.co",
+  anonKey: "sb_publishable_F2nigVaZ0IY2NWzR4uTzaw_PipVVm4j"
 };
