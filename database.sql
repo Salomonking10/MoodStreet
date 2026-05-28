@@ -1,0 +1,25 @@
+CREATE DATABASE IF NOT EXISTS moodstreet_db
+  CHARACTER SET utf8mb4
+  COLLATE utf8mb4_unicode_ci;
+
+USE moodstreet_db;
+
+CREATE TABLE IF NOT EXISTS usuarios (
+  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  nombre VARCHAR(80) NOT NULL,
+  correo VARCHAR(150) NOT NULL UNIQUE,
+  contrasena VARCHAR(255) NOT NULL,
+  fecha_registro DATE DEFAULT (CURRENT_DATE)
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS progreso (
+  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  usuario_id INT UNSIGNED NOT NULL,
+  mood VARCHAR(30) NOT NULL,
+  tareas JSON NOT NULL,
+  completado TINYINT(1) NOT NULL DEFAULT 0,
+  fecha_actualizacion DATE DEFAULT (CURRENT_DATE),
+  UNIQUE KEY usuario_mood (usuario_id, mood),
+  CONSTRAINT fk_usuario
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE
+) ENGINE=InnoDB;

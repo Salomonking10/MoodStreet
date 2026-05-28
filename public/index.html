@@ -1,0 +1,1122 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MoodStreet</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="auth-overlay" id="auth-overlay">
+    <section class="auth-panel" aria-label="Acceso a MoodStreet">
+      <p class="auth-brand">MoodStreet</p>
+      <h1 id="auth-title">Inicia sesión</h1>
+      <p class="auth-copy">Guarda tu progreso y continúa tus rutinas cuando regreses.</p>
+
+      <div class="auth-tabs" role="tablist" aria-label="Tipo de acceso">
+        <button class="auth-tab active" id="mostrar-login" type="button">Iniciar sesión</button>
+        <button class="auth-tab" id="mostrar-registro" type="button">Registrarme</button>
+      </div>
+
+      <form class="auth-form" id="form-login">
+        <label for="login-correo">Correo</label>
+        <input id="login-correo" name="correo" type="email" autocomplete="email" required>
+        <label for="login-clave">Contraseña</label>
+        <input id="login-clave" name="clave" type="password" autocomplete="current-password" required>
+        <button class="auth-submit" type="submit">Entrar</button>
+      </form>
+
+      <form class="auth-form" id="form-registro" hidden>
+        <label for="registro-nombre">Nombre</label>
+        <input id="registro-nombre" name="nombre" type="text" autocomplete="name" minlength="2" required>
+        <label for="registro-correo">Correo</label>
+        <input id="registro-correo" name="correo" type="email" autocomplete="email" required>
+        <label for="registro-clave">Contraseña</label>
+        <input id="registro-clave" name="clave" type="password" autocomplete="new-password" minlength="6" required>
+        <button class="auth-submit" type="submit">Crear cuenta</button>
+      </form>
+
+      <p class="auth-message" id="auth-message" aria-live="polite"></p>
+    </section>
+  </div>
+
+  <div class="page-shell">
+    <header class="topbar">
+      <a class="logo" href="#" aria-label="MoodStreet inicio">MoodStreet</a>
+      <div class="session-box" id="session-box" hidden>
+        <span>Hola, <strong id="session-name"></strong></span>
+        <button id="cerrar-sesion" type="button">Salir</button>
+      </div>
+    </header>
+
+    <main class="app-stage">
+      <section class="screen active" id="inicio">
+        <div class="hero-copy">
+          <h1>¿Cómo te sientes últimamente?</h1>
+          <p>Toma rutinas y actividades para mejorar o potenciar tu mood</p>
+        </div>
+
+        <div class="mood-grid">
+          <button class="mood-card mood-button border-purple" id="card-aburrido" type="button">
+            <span class="mood-title">Aburrido</span>
+            <span class="mood-text">El problema no es el plan... eres tú sin ganas</span>
+          </button>
+          <button class="mood-card mood-button border-orange" id="card-estresado" type="button">
+            <span class="mood-title">Estresado</span>
+            <span class="mood-text">Pensar tanto no te está ayudando, pero sigues</span>
+          </button>
+          <button class="mood-card mood-button border-yellow" id="card-activo" type="button">
+            <span class="mood-title">Activo</span>
+            <span class="mood-text">Hoy tienes el power... No lo desaproveches</span>
+          </button>
+          <button class="mood-card mood-button border-green" id="card-productivo" type="button">
+            <span class="mood-title">Productivo</span>
+            <span class="mood-text">Ese momento raro donde sí quieres hacer algo bien</span>
+          </button>
+          <button class="mood-card mood-button border-blue" id="card-bajoneado" type="button">
+            <span class="mood-title">Bajoneado</span>
+            <span class="mood-text">Un mal día no es una mala vida</span>
+          </button>
+          <button class="mood-card mood-button border-cyan" id="card-solo" type="button">
+            <span class="mood-title">Solo/Sin plan</span>
+            <span class="mood-text">No siempre es soledad, a veces es paz bien escogida</span>
+          </button>
+        </div>
+      </section>
+
+      <section class="screen" id="actividades">
+        <div class="activity-top">
+          <span>...Mood Detectado...</span>
+          <button class="back-button" id="volver-inicio" type="button">Volver al inicio</button>
+        </div>
+
+        <div class="activity-head">
+          <h1>Tu mood puede mejorar...</h1>
+        </div>
+
+        <div class="activity-grid">
+          <article class="activity-card">
+            <h2>Salir / Explorar cerca</h2>
+            <p>Encuentra restaurantes y planes cerca de ti</p>
+            <button id="ver-explorar" type="button">Iniciar Actividad</button>
+          </article>
+          <article class="activity-card">
+            <h2>Jugar un rato</h2>
+            <p>Un par de partidas y se te pasa el aburrimiento</p>
+            <button id="ver-juegos" type="button">Iniciar Actividad</button>
+          </article>
+          <article class="activity-card">
+            <h2>Película o serie</h2>
+            <p>Plan fácil, cero esfuerzo</p>
+            <button id="ver-peliculas" type="button">Iniciar Actividad</button>
+          </article>
+        </div>
+
+        <button class="wide-action" id="ver-rutina" type="button">Rutina mood aburrido</button>
+      </section>
+
+      <section class="screen stress-screen" id="actividades-estresado">
+        <div class="activity-top">
+          <span>...Mood Detectado: Estresado...</span>
+          <button class="back-button" id="volver-inicio-estresado" type="button">Volver al inicio</button>
+        </div>
+
+        <div class="activity-head">
+          <h1>Baja el ruido mental...</h1>
+        </div>
+
+        <div class="activity-grid">
+          <article class="activity-card stress-card">
+            <h2>Respiración guiada</h2>
+            <p>Un minuto para bajar el ritmo y volver al presente</p>
+            <button id="ver-respiracion" type="button">Iniciar Actividad</button>
+          </article>
+          <article class="activity-card stress-card">
+            <h2>Desahogo mental</h2>
+            <p>Saca de tu cabeza lo que te está pesando</p>
+            <button id="ver-desahogo" type="button">Iniciar Actividad</button>
+          </article>
+          <article class="activity-card stress-card">
+            <h2>Sonidos relajantes</h2>
+            <p>Pon un ambiente suave y date una pausa real</p>
+            <button id="ver-sonidos" type="button">Iniciar Actividad</button>
+          </article>
+        </div>
+
+        <button class="wide-action stress-action" id="ver-rutina-estresado" type="button">Rutina mood estresado</button>
+      </section>
+
+      <section class="screen active-screen" id="actividades-activo">
+        <div class="activity-top">
+          <span>...Mood Detectado: Activo...</span>
+          <button class="back-button" id="volver-inicio-activo" type="button">Volver al inicio</button>
+        </div>
+
+        <div class="activity-head">
+          <h1>Aprovecha tu energía...</h1>
+        </div>
+
+        <div class="activity-grid">
+          <article class="activity-card active-card">
+            <h2>Entrenamiento rápido</h2>
+            <p>Mueve el cuerpo con un reto corto y dinámico</p>
+            <button id="ver-entrenamiento" type="button">Iniciar Actividad</button>
+          </article>
+          <article class="activity-card active-card">
+            <h2>Plan al aire libre</h2>
+            <p>Encuentra parques, canchas y rutas cerca de ti</p>
+            <button id="ver-explorar-activo" type="button">Iniciar Actividad</button>
+          </article>
+          <article class="activity-card active-card">
+            <h2>Playlist de energía</h2>
+            <p>Sube el ritmo con música para moverte</p>
+            <button id="ver-musica-activo" type="button">Iniciar Actividad</button>
+          </article>
+        </div>
+
+        <button class="wide-action active-action" id="ver-rutina-activo" type="button">Rutina mood activo</button>
+      </section>
+
+      <section class="screen productive-screen" id="actividades-productivo">
+        <div class="activity-top">
+          <span>...Mood Detectado: Productivo...</span>
+          <button class="back-button" id="volver-inicio-productivo" type="button">Volver al inicio</button>
+        </div>
+
+        <div class="activity-head">
+          <h1>Haz que el impulso cuente...</h1>
+        </div>
+
+        <div class="activity-grid">
+          <article class="activity-card productive-card">
+            <h2>Enfoque rápido</h2>
+            <p>Trabaja en una sola cosa sin distracciones</p>
+            <button id="ver-enfoque" type="button">Iniciar Actividad</button>
+          </article>
+          <article class="activity-card productive-card">
+            <h2>Organiza tareas</h2>
+            <p>Convierte tus ideas en pasos claros</p>
+            <button id="ver-tareas" type="button">Iniciar Actividad</button>
+          </article>
+          <article class="activity-card productive-card">
+            <h2>Música de foco</h2>
+            <p>Ambiente sonoro para mantener la concentración</p>
+            <button id="ver-musica-productivo" type="button">Iniciar Actividad</button>
+          </article>
+        </div>
+
+        <button class="wide-action productive-action" id="ver-rutina-productivo" type="button">Rutina mood productivo</button>
+      </section>
+
+      <section class="screen low-screen" id="actividades-bajoneado">
+        <div class="activity-top">
+          <span>...Mood Detectado: Bajoneado...</span>
+          <button class="back-button" id="volver-inicio-bajoneado" type="button">Volver al inicio</button>
+        </div>
+        <div class="activity-head">
+          <h1>Hoy mereces ir con calma...</h1>
+        </div>
+        <div class="activity-grid">
+          <article class="activity-card low-card">
+            <h2>Autocuidado suave</h2>
+            <p>Pequeños pasos para sentirte acompañado por ti</p>
+            <button id="ver-autocuidado" type="button">Iniciar Actividad</button>
+          </article>
+          <article class="activity-card low-card">
+            <h2>Libros para acompañarte</h2>
+            <p>Lecturas reconfortantes, romance y fantasía para leer a tu ritmo</p>
+            <button id="ver-libros-bajoneado" type="button">Ver libros</button>
+          </article>
+          <article class="activity-card low-card">
+            <h2>Lugar tranquilo</h2>
+            <p>Encuentra un espacio cercano para tomar aire</p>
+            <button id="ver-lugar-bajoneado" type="button">Iniciar Actividad</button>
+          </article>
+        </div>
+        <button class="wide-action low-action" id="ver-rutina-bajoneado" type="button">Rutina mood bajoneado</button>
+      </section>
+
+      <section class="screen solo-screen" id="actividades-solo">
+        <div class="activity-top">
+          <span>...Mood Detectado: Solo/Sin plan...</span>
+          <button class="back-button" id="volver-inicio-solo" type="button">Volver al inicio</button>
+        </div>
+        <div class="activity-head">
+          <h1>Arma un plan a tu medida...</h1>
+        </div>
+        <div class="activity-grid">
+          <article class="activity-card solo-card">
+            <h2>Descubre un plan</h2>
+            <p>Busca lugares interesantes cerca de ti</p>
+            <button id="ver-plan-solo" type="button">Iniciar Actividad</button>
+          </article>
+          <article class="activity-card solo-card">
+            <h2>Plan para uno</h2>
+            <p>Elige una actividad y disfruta tu tiempo</p>
+            <button id="ver-ideas-solo" type="button">Iniciar Actividad</button>
+          </article>
+          <article class="activity-card solo-card">
+            <h2>Explora algo nuevo</h2>
+            <p>Ideas gratuitas para salir de la rutina</p>
+            <button id="ver-explorar-solo" type="button">Iniciar Actividad</button>
+          </article>
+        </div>
+        <button class="wide-action solo-action" id="ver-rutina-solo" type="button">Rutina mood solo/sin plan</button>
+      </section>
+
+      <section class="screen" id="peliculas">
+        <div class="watch-top">
+          <button class="back-button" id="volver-actividades" type="button">Volver a actividades</button>
+        </div>
+
+        <h1 class="watch-title">ELIGE QUÉ QUIERES VER</h1>
+
+        <div class="watch-grid">
+          <article class="watch-card">
+            <div class="poster poster-action" aria-hidden="true"></div>
+            <div class="watch-info">
+              <h2>Otro día para matar</h2>
+              <p><strong>Género:</strong> Acción</p>
+              <p><strong>Descripción:</strong> Acción directa, cero relleno, pura adrenalina sin pensar mucho</p>
+              <p><strong>Plataforma:</strong> Netflix</p>
+            </div>
+            <a class="watch-link" href="https://www.netflix.com/dm-es/title/80013762" target="_blank" rel="noopener noreferrer">Ver ahora</a>
+          </article>
+
+          <article class="watch-card">
+            <div class="poster poster-comedy" aria-hidden="true"></div>
+            <div class="watch-info">
+              <h2>¿Qué pasó ayer?</h2>
+              <p><strong>Género:</strong> Comedia</p>
+              <p><strong>Descripción:</strong> Una despedida de soltero se sale de control en Las Vegas</p>
+              <p><strong>Plataforma:</strong> HBO Max</p>
+            </div>
+            <a class="watch-link" href="https://play.hbomax.com/movie/2a8a879a-f0eb-4df4-9206-d1d641589486" target="_blank" rel="noopener noreferrer">Ver ahora</a>
+          </article>
+
+          <article class="watch-card">
+            <div class="poster poster-simpsons" aria-hidden="true"></div>
+            <div class="watch-info">
+              <h2>Los Simpson</h2>
+              <p><strong>Género:</strong> Comedia, Animación</p>
+              <p><strong>Descripción:</strong> La familia de Springfield vive ocurrencias irreverentes y momentos inolvidables</p>
+              <p><strong>Plataforma:</strong> Disney+</p>
+            </div>
+            <a class="watch-link" href="https://www.disneyplus.com/es-co/series/los-simpson/3ZoBZ52QHb4x" target="_blank" rel="noopener noreferrer">Ver ahora</a>
+          </article>
+        </div>
+      </section>
+
+      <section class="screen" id="juegos">
+        <div class="watch-top">
+          <button class="back-button" id="volver-juegos" type="button">Volver a actividades</button>
+        </div>
+
+        <h1 class="watch-title">ELIGE QUÉ QUIERES JUGAR</h1>
+
+        <div class="watch-grid">
+          <article class="watch-card">
+            <div class="poster game-gta" aria-hidden="true"></div>
+            <div class="watch-info">
+              <h2>Grand Theft Auto V</h2>
+              <p><strong>Género:</strong> Acción y aventura</p>
+              <p><strong>Descripción:</strong> Vive atracos y acción en Los Santos junto a tres protagonistas</p>
+              <p><strong>Plataforma:</strong> Rockstar Games</p>
+            </div>
+            <a class="watch-link" href="https://store.rockstargames.com/es/game/buy-gta-v" target="_blank" rel="noopener noreferrer">Jugar ahora</a>
+          </article>
+
+          <article class="watch-card">
+            <div class="poster game-sims" aria-hidden="true"></div>
+            <div class="watch-info">
+              <h2>The Sims 4</h2>
+              <p><strong>Género:</strong> Simulación</p>
+              <p><strong>Descripción:</strong> Crea personajes, construye hogares y diseña historias a tu manera</p>
+              <p><strong>Plataforma:</strong> EA</p>
+            </div>
+            <a class="watch-link" href="https://www.ea.com/es-es/games/the-sims/the-sims-4/download" target="_blank" rel="noopener noreferrer">Jugar ahora</a>
+          </article>
+
+          <article class="watch-card">
+            <div class="poster game-minecraft" aria-hidden="true"></div>
+            <div class="watch-info">
+              <h2>Minecraft</h2>
+              <p><strong>Género:</strong> Sandbox</p>
+              <p><strong>Descripción:</strong> Explora, construye y crea aventuras en un mundo formado por bloques</p>
+              <p><strong>Plataforma:</strong> Minecraft</p>
+            </div>
+            <a class="watch-link" href="https://www.microsoft.com/es-co/store/p/minecraft-java-bedrock-edition-for-pc/9NXP44L49SHJ/0010" target="_blank" rel="noopener noreferrer">Jugar ahora</a>
+          </article>
+        </div>
+      </section>
+
+      <section class="screen" id="explorar">
+        <div class="explore-top">
+          <span>...Explora tu zona...</span>
+          <button class="back-button" id="volver-explorar" type="button">Volver a actividades</button>
+        </div>
+
+        <div class="explore-head">
+          <h1>Descubre planes cerca de ti</h1>
+          <p>Escribe tu ubicación y elige qué quieres buscar</p>
+        </div>
+
+        <div class="location-box">
+          <label for="ubicacion">Tu ubicación</label>
+          <input id="ubicacion" type="text" placeholder="Ej: Poblado, Medellín">
+          <p class="location-error" id="error-ubicacion"></p>
+
+          <div class="search-grid">
+            <button class="map-button" type="button" data-busqueda="restaurantes">Buscar restaurantes</button>
+            <button class="map-button" type="button" data-busqueda="cafés">Buscar cafés</button>
+            <button class="map-button" type="button" data-busqueda="planes para hacer">Buscar planes</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen active-screen" id="entrenamiento">
+        <div class="watch-top">
+          <button class="back-button" id="volver-entrenamiento" type="button">Volver a actividades</button>
+        </div>
+
+        <div class="workout-head">
+          <h1>Reto Express</h1>
+          <p>Completa 12 minutos de movimiento</p>
+        </div>
+
+        <div class="workout-grid">
+          <label class="workout-step">
+            <input type="checkbox">
+            <strong>Calentamiento</strong>
+            <span>3 min - movilidad y marcha rápida</span>
+          </label>
+          <label class="workout-step">
+            <input type="checkbox">
+            <strong>Power Circuit</strong>
+            <span>6 min - sentadillas, jumping jacks y plancha</span>
+          </label>
+          <label class="workout-step">
+            <input type="checkbox">
+            <strong>Vuelta a la calma</strong>
+            <span>3 min - respiración y estiramiento</span>
+          </label>
+        </div>
+
+        <button class="workout-finish" id="terminar-entrenamiento" type="button">Completar entrenamiento</button>
+        <p class="workout-message" id="mensaje-entrenamiento" hidden>Actividad completada. Usa esa energía en algo que te haga sentir bien.</p>
+      </section>
+
+      <section class="screen active-screen" id="explorar-activo">
+        <div class="explore-top">
+          <span>...Muévete cerca de ti...</span>
+          <button class="back-button" id="volver-explorar-activo" type="button">Volver a actividades</button>
+        </div>
+
+        <div class="explore-head">
+          <h1>Encuentra dónde moverte</h1>
+          <p>Escribe tu ubicación y busca un plan activo</p>
+        </div>
+
+        <div class="location-box active-location">
+          <label for="ubicacion-activo">Tu ubicación</label>
+          <input id="ubicacion-activo" type="text" placeholder="Ej: Poblado, Medellín">
+          <p class="location-error" id="error-ubicacion-activo"></p>
+
+          <div class="search-grid">
+            <button class="active-map-button" type="button" data-busqueda="parques">Buscar parques</button>
+            <button class="active-map-button" type="button" data-busqueda="canchas deportivas">Buscar canchas</button>
+            <button class="active-map-button" type="button" data-busqueda="rutas para caminar">Buscar rutas</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen active-screen" id="musica-activo">
+        <div class="watch-top">
+          <button class="back-button" id="volver-musica-activo" type="button">Volver a actividades</button>
+        </div>
+
+        <h1 class="watch-title">ELIGE TU RITMO</h1>
+
+        <div class="watch-grid">
+          <article class="watch-card energy-card">
+            <div class="poster energy-workout" aria-hidden="true"></div>
+            <div class="watch-info">
+              <h2>Workout Hits</h2>
+              <p><strong>Ideal para:</strong> Entrenar</p>
+              <p>Música intensa para sostener tu ritmo durante el ejercicio.</p>
+              <p><strong>Plataforma:</strong> YouTube</p>
+            </div>
+            <a class="watch-link" href="https://www.youtube.com/results?search_query=workout+music+playlist" target="_blank" rel="noopener noreferrer">Escuchar</a>
+          </article>
+          <article class="watch-card energy-card">
+            <div class="poster energy-dance" aria-hidden="true"></div>
+            <div class="watch-info">
+              <h2>Dance Energy</h2>
+              <p><strong>Ideal para:</strong> Bailar</p>
+              <p>Una selección para moverte sin pensar demasiado.</p>
+              <p><strong>Plataforma:</strong> YouTube</p>
+            </div>
+            <a class="watch-link" href="https://www.youtube.com/results?search_query=dance+energy+playlist" target="_blank" rel="noopener noreferrer">Escuchar</a>
+          </article>
+          <article class="watch-card energy-card">
+            <div class="poster energy-run" aria-hidden="true"></div>
+            <div class="watch-info">
+              <h2>Running Power</h2>
+              <p><strong>Ideal para:</strong> Salir a correr</p>
+              <p>Beats constantes para acompañar una caminata o carrera.</p>
+              <p><strong>Plataforma:</strong> YouTube</p>
+            </div>
+            <a class="watch-link" href="https://www.youtube.com/results?search_query=running+music+playlist" target="_blank" rel="noopener noreferrer">Escuchar</a>
+          </article>
+        </div>
+      </section>
+
+      <section class="screen productive-screen" id="enfoque">
+        <div class="watch-top">
+          <button class="back-button" id="volver-enfoque" type="button">Volver a actividades</button>
+        </div>
+
+        <div class="focus-head">
+          <h1>Sesión de enfoque</h1>
+          <p>Elige una tarea y concéntrate durante cinco minutos</p>
+        </div>
+
+        <div class="focus-box">
+          <span class="focus-label">Tiempo de concentración</span>
+          <strong class="focus-clock" id="tiempo-enfoque">05:00</strong>
+          <div class="focus-actions">
+            <button class="focus-primary" id="iniciar-enfoque" type="button">Comenzar</button>
+            <button class="focus-secondary" id="reiniciar-enfoque" type="button">Reiniciar</button>
+          </div>
+          <p class="focus-status" id="estado-enfoque">Prepara tu tarea principal y elimina distracciones.</p>
+        </div>
+      </section>
+
+      <section class="screen productive-screen" id="tareas-productivo">
+        <div class="watch-top">
+          <button class="back-button" id="volver-tareas" type="button">Volver a actividades</button>
+        </div>
+
+        <div class="focus-head">
+          <h1>Organiza tus tareas</h1>
+          <p>Agrega pasos concretos y márcalos cuando los completes</p>
+        </div>
+
+        <div class="todo-box">
+          <div class="todo-form">
+            <input id="nueva-tarea" type="text" placeholder="Ej: Terminar la presentación">
+            <button id="agregar-tarea" type="button">Agregar</button>
+          </div>
+          <p class="todo-error" id="error-tarea"></p>
+          <ul class="todo-list" id="lista-tareas">
+            <li><label><input type="checkbox"><span>Definir la prioridad principal de hoy</span></label></li>
+          </ul>
+          <button class="todo-clear" id="limpiar-tareas" type="button">Limpiar completadas</button>
+        </div>
+      </section>
+
+      <section class="screen productive-screen" id="musica-productivo">
+        <div class="watch-top">
+          <button class="back-button" id="volver-musica-productivo" type="button">Volver a actividades</button>
+        </div>
+
+        <h1 class="watch-title">ELIGE MÚSICA PARA ENFOCARTE</h1>
+
+        <div class="watch-grid">
+          <article class="watch-card focus-card">
+            <div class="poster focus-lofi" aria-hidden="true"></div>
+            <div class="watch-info">
+              <h2>Lo-fi Focus</h2>
+              <p><strong>Ideal para:</strong> Estudiar</p>
+              <p>Beats tranquilos para avanzar sin ruido mental.</p>
+              <p><strong>Plataforma:</strong> YouTube</p>
+            </div>
+            <a class="watch-link" href="https://www.youtube.com/results?search_query=lofi+music+for+studying" target="_blank" rel="noopener noreferrer">Escuchar</a>
+          </article>
+          <article class="watch-card focus-card">
+            <div class="poster focus-piano" aria-hidden="true"></div>
+            <div class="watch-info">
+              <h2>Piano de concentración</h2>
+              <p><strong>Ideal para:</strong> Leer</p>
+              <p>Melodías instrumentales para trabajar con calma.</p>
+              <p><strong>Plataforma:</strong> YouTube</p>
+            </div>
+            <a class="watch-link" href="https://www.youtube.com/results?search_query=piano+music+for+focus" target="_blank" rel="noopener noreferrer">Escuchar</a>
+          </article>
+          <article class="watch-card focus-card">
+            <div class="poster focus-ambient" aria-hidden="true"></div>
+            <div class="watch-info">
+              <h2>Deep Work Ambient</h2>
+              <p><strong>Ideal para:</strong> Crear</p>
+              <p>Ambiente continuo para sostener una sesión de trabajo.</p>
+              <p><strong>Plataforma:</strong> YouTube</p>
+            </div>
+            <a class="watch-link" href="https://www.youtube.com/results?search_query=deep+work+ambient+music" target="_blank" rel="noopener noreferrer">Escuchar</a>
+          </article>
+        </div>
+      </section>
+
+      <section class="screen low-screen" id="autocuidado">
+        <div class="watch-top">
+          <button class="back-button" id="volver-autocuidado" type="button">Volver a actividades</button>
+        </div>
+        <div class="gentle-head">
+          <h1>Pausa de autocuidado</h1>
+          <p>No tienes que arreglar todo hoy. Completa tres gestos sencillos.</p>
+        </div>
+        <div class="gentle-plan" id="plan-autocuidado">
+          <label><input type="checkbox"><span>Toma un vaso de agua con calma.</span></label>
+          <label><input type="checkbox"><span>Abre una ventana o busca un poco de luz.</span></label>
+          <label><input type="checkbox"><span>Escribe una cosa amable que puedas hacer por ti hoy.</span></label>
+          <button class="gentle-finish" type="button">Completar pausa</button>
+          <p class="gentle-message" hidden></p>
+        </div>
+      </section>
+
+      <section class="screen low-screen books-screen" id="libros-bajoneado">
+        <div class="watch-top">
+          <button class="back-button" id="volver-libros-bajoneado" type="button">Volver a actividades</button>
+        </div>
+        <h1 class="books-title">ELIGE UNA HISTORIA QUE TE ACOMPAÑE</h1>
+        <p class="books-subtitle">A veces un libro no arregla el día, pero sí lo hace más llevadero.</p>
+        <div class="book-categories">
+          <section class="book-category comfort-books">
+            <h2>Reconfortantes</h2>
+            <a class="book-item" href="https://books.google.com/books?q=El+principito+Antoine+de+Saint+Exupery" target="_blank" rel="noopener noreferrer"><strong>El principito</strong><span>Antoine de Saint-Exupéry</span></a>
+            <a class="book-item" href="https://books.google.com/books?q=Anne+de+las+Tejas+Verdes+Lucy+Maud+Montgomery" target="_blank" rel="noopener noreferrer"><strong>Anne de las Tejas Verdes</strong><span>L. M. Montgomery</span></a>
+            <a class="book-item" href="https://books.google.com/books?q=Mujercitas+Louisa+May+Alcott" target="_blank" rel="noopener noreferrer"><strong>Mujercitas</strong><span>Louisa May Alcott</span></a>
+            <a class="book-item" href="https://books.google.com/books?q=La+sociedad+literaria+del+pastel+de+piel+de+patata+de+Guernsey" target="_blank" rel="noopener noreferrer"><strong>La sociedad literaria de Guernsey</strong><span>Mary Ann Shaffer</span></a>
+            <a class="book-item" href="https://books.google.com/books?q=El+jardin+secreto+Frances+Hodgson+Burnett" target="_blank" rel="noopener noreferrer"><strong>El jardín secreto</strong><span>Frances Hodgson Burnett</span></a>
+          </section>
+          <section class="book-category romance-books">
+            <h2>Romance</h2>
+            <a class="book-item" href="https://books.google.com/books/about/Pride_and_Prejudice.html?id=m8C0n-INAQwC" target="_blank" rel="noopener noreferrer"><strong>Orgullo y prejuicio</strong><span>Jane Austen</span></a>
+            <a class="book-item" href="https://books.google.com/books?q=Jane+Eyre+Charlotte+Bronte" target="_blank" rel="noopener noreferrer"><strong>Jane Eyre</strong><span>Charlotte Brontë</span></a>
+            <a class="book-item" href="https://books.google.com/books?q=Yo+antes+de+ti+Jojo+Moyes" target="_blank" rel="noopener noreferrer"><strong>Yo antes de ti</strong><span>Jojo Moyes</span></a>
+            <a class="book-item" href="https://books.google.com/books?q=El+cuaderno+de+Noah+Nicholas+Sparks" target="_blank" rel="noopener noreferrer"><strong>El cuaderno de Noah</strong><span>Nicholas Sparks</span></a>
+            <a class="book-item" href="https://books.google.com/books?q=Como+agua+para+chocolate+Laura+Esquivel" target="_blank" rel="noopener noreferrer"><strong>Como agua para chocolate</strong><span>Laura Esquivel</span></a>
+          </section>
+          <section class="book-category fantasy-books">
+            <h2>Fantasía</h2>
+            <a class="book-item" href="https://books.google.com/books/about/Harry_Potter_and_the_Philosopher_s_Stone.html?id=cmNSzQEACAAJ" target="_blank" rel="noopener noreferrer"><strong>Harry Potter y la piedra filosofal</strong><span>J. K. Rowling</span></a>
+            <a class="book-item" href="https://books.google.com/books?q=El+hobbit+J+R+R+Tolkien" target="_blank" rel="noopener noreferrer"><strong>El hobbit</strong><span>J. R. R. Tolkien</span></a>
+            <a class="book-item" href="https://books.google.com/books?q=Las+cronicas+de+Narnia+C+S+Lewis" target="_blank" rel="noopener noreferrer"><strong>Las crónicas de Narnia</strong><span>C. S. Lewis</span></a>
+            <a class="book-item" href="https://books.google.com/books?q=Percy+Jackson+Rick+Riordan" target="_blank" rel="noopener noreferrer"><strong>Percy Jackson</strong><span>Rick Riordan</span></a>
+            <a class="book-item" href="https://books.google.com/books?q=El+nombre+del+viento+Patrick+Rothfuss" target="_blank" rel="noopener noreferrer"><strong>El nombre del viento</strong><span>Patrick Rothfuss</span></a>
+          </section>
+        </div>
+      </section>
+
+      <section class="screen low-screen" id="lugar-bajoneado">
+        <div class="explore-top">
+          <span>...Un lugar tranquilo...</span>
+          <button class="back-button" id="volver-lugar-bajoneado" type="button">Volver a actividades</button>
+        </div>
+        <div class="explore-head">
+          <h1>Encuentra un espacio para respirar</h1>
+          <p>Busca un plan suave y cercano a tu ubicación</p>
+        </div>
+        <div class="location-box low-location">
+          <label for="ubicacion-bajoneado">Tu ubicación</label>
+          <input id="ubicacion-bajoneado" type="text" placeholder="Ej: Poblado, Medellín">
+          <p class="location-error" id="error-ubicacion-bajoneado"></p>
+          <div class="search-grid">
+            <button class="low-map-button" type="button" data-busqueda="cafés tranquilos">Buscar cafés</button>
+            <button class="low-map-button" type="button" data-busqueda="parques tranquilos">Buscar parques</button>
+            <button class="low-map-button" type="button" data-busqueda="librerías">Buscar librerías</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen solo-screen" id="plan-solo">
+        <div class="explore-top">
+          <span>...Tu próximo plan...</span>
+          <button class="back-button" id="volver-plan-solo" type="button">Volver a actividades</button>
+        </div>
+        <div class="explore-head">
+          <h1>Descubre algo cerca</h1>
+          <p>Salir solo también puede ser un buen plan</p>
+        </div>
+        <div class="location-box solo-location">
+          <label for="ubicacion-solo">Tu ubicación</label>
+          <input id="ubicacion-solo" type="text" placeholder="Ej: Poblado, Medellín">
+          <p class="location-error" id="error-ubicacion-solo"></p>
+          <div class="search-grid">
+            <button class="solo-map-button" type="button" data-busqueda="museos">Buscar museos</button>
+            <button class="solo-map-button" type="button" data-busqueda="cine">Buscar cine</button>
+            <button class="solo-map-button" type="button" data-busqueda="eventos culturales">Buscar eventos</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen solo-screen" id="ideas-solo">
+        <div class="watch-top">
+          <button class="back-button" id="volver-ideas-solo" type="button">Volver a actividades</button>
+        </div>
+        <div class="gentle-head solo-head">
+          <h1>Plan para uno</h1>
+          <p>Elige una idea y conviértela en tu plan de hoy</p>
+        </div>
+        <div class="gentle-plan solo-plan" id="plan-individual">
+          <label><input type="checkbox"><span>Preparar tu comida favorita y ver una película.</span></label>
+          <label><input type="checkbox"><span>Visitar un café con un libro o música.</span></label>
+          <label><input type="checkbox"><span>Tomar fotos en una caminata corta.</span></label>
+          <button class="gentle-finish" type="button">Elegir plan</button>
+          <p class="gentle-message" hidden></p>
+        </div>
+      </section>
+
+      <section class="screen solo-screen" id="explorar-solo">
+        <div class="watch-top">
+          <button class="back-button" id="volver-explorar-solo" type="button">Volver a actividades</button>
+        </div>
+        <h1 class="watch-title">PRUEBA ALGO NUEVO</h1>
+        <div class="watch-grid">
+          <article class="watch-card discover-card">
+            <div class="poster discover-course" aria-hidden="true"></div>
+            <div class="watch-info">
+              <h2>Curso corto</h2>
+              <p><strong>Plan:</strong> Aprende algo curioso</p>
+              <p>Explora tutoriales gratuitos y prueba una habilidad nueva.</p>
+              <p><strong>Plataforma:</strong> YouTube</p>
+            </div>
+            <a class="watch-link" href="https://www.youtube.com/results?search_query=tutoriales+para+aprender+algo+nuevo" target="_blank" rel="noopener noreferrer">Explorar</a>
+          </article>
+          <article class="watch-card discover-card">
+            <div class="poster discover-walk" aria-hidden="true"></div>
+            <div class="watch-info">
+              <h2>Tour virtual</h2>
+              <p><strong>Plan:</strong> Conoce un lugar</p>
+              <p>Recorre ciudades y museos desde casa.</p>
+              <p><strong>Plataforma:</strong> YouTube</p>
+            </div>
+            <a class="watch-link" href="https://www.youtube.com/results?search_query=virtual+walking+tour" target="_blank" rel="noopener noreferrer">Explorar</a>
+          </article>
+          <article class="watch-card discover-card">
+            <div class="poster discover-cook" aria-hidden="true"></div>
+            <div class="watch-info">
+              <h2>Receta diferente</h2>
+              <p><strong>Plan:</strong> Cocina algo nuevo</p>
+              <p>Elige una receta sencilla y conviértela en experiencia.</p>
+              <p><strong>Plataforma:</strong> YouTube</p>
+            </div>
+            <a class="watch-link" href="https://www.youtube.com/results?search_query=recetas+faciles+para+una+persona" target="_blank" rel="noopener noreferrer">Explorar</a>
+          </article>
+        </div>
+      </section>
+
+      <section class="screen routine-screen" id="rutina">
+        <div class="routine-top">
+          <span>...Rutina Mood Aburrido...</span>
+          <button class="back-button" id="volver-rutina" type="button">Volver a actividades</button>
+        </div>
+
+        <h1 class="routine-title">Tu semana para activar el mood</h1>
+
+        <div class="routine-grid">
+          <article class="day-card">
+            <h2>Día 1</h2>
+            <h3>Movimiento suave</h3>
+            <p>~40 min</p>
+            <label class="task"><input type="checkbox"><span>Estiramiento de 5 minutos al despertar.</span></label>
+            <label class="task"><input type="checkbox"><span>Salida a caminar sin destino fijo.</span></label>
+            <label class="task"><input type="checkbox"><span>Escribe 3 cosas que pasaron hoy.</span></label>
+            <button class="day-finish" type="button">Día terminado</button>
+          </article>
+
+          <article class="day-card">
+            <h2>Día 2</h2>
+            <h3>Creatividad libre</h3>
+            <p>~45 min</p>
+            <label class="task"><input type="checkbox"><span>Dibuja o garabatea sin propósito.</span></label>
+            <label class="task"><input type="checkbox"><span>Prepara una receta nueva.</span></label>
+            <label class="task"><input type="checkbox"><span>Escucha un álbum completo.</span></label>
+            <button class="day-finish" type="button">Día terminado</button>
+          </article>
+
+          <article class="day-card">
+            <h2>Día 3</h2>
+            <h3>Conexión social</h3>
+            <p>~50 min</p>
+            <label class="task"><input type="checkbox"><span>Envía un mensaje a alguien.</span></label>
+            <label class="task"><input type="checkbox"><span>Llama o habla con una persona.</span></label>
+            <label class="task"><input type="checkbox"><span>Comparte algo que te gustó.</span></label>
+            <button class="day-finish" type="button">Día terminado</button>
+          </article>
+
+          <article class="day-card">
+            <h2>Día 4</h2>
+            <h3>Aprendizaje rápido</h3>
+            <p>~35 min</p>
+            <label class="task"><input type="checkbox"><span>Mira un video educativo corto.</span></label>
+            <label class="task"><input type="checkbox"><span>Aprende 5 palabras en otro idioma.</span></label>
+            <label class="task"><input type="checkbox"><span>Explica lo aprendido con tus palabras.</span></label>
+            <button class="day-finish" type="button">Día terminado</button>
+          </article>
+
+          <article class="day-card">
+            <h2>Día 5</h2>
+            <h3>Introspección y cierre</h3>
+            <p>~30 min</p>
+            <label class="task"><input type="checkbox"><span>Revisa cómo te sentiste cada día.</span></label>
+            <label class="task"><input type="checkbox"><span>Escribe algo que quieras repetir.</span></label>
+            <label class="task"><input type="checkbox"><span>Descansa sin culpa.</span></label>
+            <button class="day-finish" type="button">Día terminado</button>
+          </article>
+        </div>
+
+        <div class="week-actions">
+          <button class="finish-week" id="terminar-semana" type="button">Terminar semana</button>
+          <button class="reset-week" id="reiniciar-semana" type="button">Reiniciar semana</button>
+        </div>
+
+        <div class="week-message" id="mensaje-semana" hidden>
+          <h2>¡Semana completada!</h2>
+          <p>El aburrimiento no pudo contigo: llenaste tus días de movimiento, conexión y nuevas experiencias. Sigue buscando lo que enciende tu mood.</p>
+        </div>
+      </section>
+
+      <section class="screen stress-screen" id="respiracion">
+        <div class="watch-top">
+          <button class="back-button" id="volver-respiracion" type="button">Volver a actividades</button>
+        </div>
+
+        <div class="calm-head">
+          <h1>Respiración guiada</h1>
+          <p>Inhala, sostén y exhala. Solo necesitas un minuto.</p>
+        </div>
+
+        <div class="breathing-box">
+          <div class="breathing-circle" id="circulo-respiracion">
+            <strong id="fase-respiracion">Listo</strong>
+            <span id="segundos-fase">4</span>
+          </div>
+          <p class="breathing-time">Tiempo restante: <span id="tiempo-respiracion">01:00</span></p>
+          <div class="calm-actions">
+            <button class="calm-primary" id="iniciar-respiracion" type="button">Comenzar</button>
+            <button class="calm-secondary" id="reiniciar-respiracion" type="button">Reiniciar</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen stress-screen" id="desahogo">
+        <div class="watch-top">
+          <button class="back-button" id="volver-desahogo" type="button">Volver a actividades</button>
+        </div>
+
+        <div class="calm-head">
+          <h1>Desahogo mental</h1>
+          <p>Escribe lo que te preocupa. No se guarda en ningún lugar.</p>
+        </div>
+
+        <div class="journal-box">
+          <label for="nota-estres">Lo que tengo en la mente ahora</label>
+          <textarea id="nota-estres" placeholder="Escribe pendientes, preocupaciones o lo que necesitas soltar..."></textarea>
+          <div class="calm-actions">
+            <button class="calm-secondary" id="limpiar-nota" type="button">Limpiar texto</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen stress-screen" id="sonidos">
+        <div class="watch-top">
+          <button class="back-button" id="volver-sonidos" type="button">Volver a actividades</button>
+        </div>
+
+        <h1 class="watch-title">ELIGE UN AMBIENTE SUAVE</h1>
+
+        <div class="watch-grid">
+          <article class="watch-card sound-card">
+            <div class="poster sound-rain" aria-hidden="true"></div>
+            <div class="watch-info">
+              <h2>Lluvia tranquila</h2>
+              <p><strong>Ideal para:</strong> Soltar tensión</p>
+              <p>Sonidos de lluvia para desacelerar y respirar con calma.</p>
+              <p><strong>Plataforma:</strong> YouTube</p>
+            </div>
+            <a class="watch-link" href="https://www.youtube.com/results?search_query=sonidos+de+lluvia+relajante" target="_blank" rel="noopener noreferrer">Escuchar</a>
+          </article>
+          <article class="watch-card sound-card">
+            <div class="poster sound-forest" aria-hidden="true"></div>
+            <div class="watch-info">
+              <h2>Naturaleza</h2>
+              <p><strong>Ideal para:</strong> Hacer una pausa</p>
+              <p>Un ambiente natural que ayuda a desconectarte del ruido.</p>
+              <p><strong>Plataforma:</strong> YouTube</p>
+            </div>
+            <a class="watch-link" href="https://www.youtube.com/results?search_query=sonidos+de+naturaleza+relajantes" target="_blank" rel="noopener noreferrer">Escuchar</a>
+          </article>
+          <article class="watch-card sound-card">
+            <div class="poster sound-piano" aria-hidden="true"></div>
+            <div class="watch-info">
+              <h2>Piano calmado</h2>
+              <p><strong>Ideal para:</strong> Concentrarte</p>
+              <p>Melodías suaves para ordenar tus ideas sin presión.</p>
+              <p><strong>Plataforma:</strong> Spotify</p>
+            </div>
+            <a class="watch-link" href="https://open.spotify.com/search/piano%20relajante" target="_blank" rel="noopener noreferrer">Escuchar</a>
+          </article>
+        </div>
+      </section>
+
+      <section class="screen routine-screen stress-screen" id="rutina-estresado">
+        <div class="routine-top">
+          <span>...Rutina Mood Estresado...</span>
+          <button class="back-button" id="volver-rutina-estresado" type="button">Volver a actividades</button>
+        </div>
+
+        <h1 class="routine-title">Tu semana para bajar la tensión</h1>
+
+        <div class="routine-grid">
+          <article class="day-card">
+            <h2>Día 1</h2><h3>Pausa física</h3><p>~20 min</p>
+            <label class="task"><input type="checkbox"><span>Respira lentamente durante un minuto.</span></label>
+            <label class="task"><input type="checkbox"><span>Estira cuello y hombros con suavidad.</span></label>
+            <label class="task"><input type="checkbox"><span>Toma agua sin revisar el celular.</span></label>
+            <button class="day-finish" type="button">Día terminado</button>
+          </article>
+          <article class="day-card">
+            <h2>Día 2</h2><h3>Orden mental</h3><p>~25 min</p>
+            <label class="task"><input type="checkbox"><span>Escribe tus tres pendientes principales.</span></label>
+            <label class="task"><input type="checkbox"><span>Elige solo una prioridad de hoy.</span></label>
+            <label class="task"><input type="checkbox"><span>Guarda cinco minutos sin pantallas.</span></label>
+            <button class="day-finish" type="button">Día terminado</button>
+          </article>
+          <article class="day-card">
+            <h2>Día 3</h2><h3>Descanso sensorial</h3><p>~25 min</p>
+            <label class="task"><input type="checkbox"><span>Escucha sonidos relajantes.</span></label>
+            <label class="task"><input type="checkbox"><span>Baja el brillo y las notificaciones.</span></label>
+            <label class="task"><input type="checkbox"><span>Camina despacio diez minutos.</span></label>
+            <button class="day-finish" type="button">Día terminado</button>
+          </article>
+          <article class="day-card">
+            <h2>Día 4</h2><h3>Soltar presión</h3><p>~30 min</p>
+            <label class="task"><input type="checkbox"><span>Habla con alguien de confianza.</span></label>
+            <label class="task"><input type="checkbox"><span>Di no a una tarea no urgente.</span></label>
+            <label class="task"><input type="checkbox"><span>Haz algo que disfrutes sin meta.</span></label>
+            <button class="day-finish" type="button">Día terminado</button>
+          </article>
+          <article class="day-card">
+            <h2>Día 5</h2><h3>Cierre tranquilo</h3><p>~20 min</p>
+            <label class="task"><input type="checkbox"><span>Reconoce qué redujo tu estrés.</span></label>
+            <label class="task"><input type="checkbox"><span>Planea una pausa para la próxima semana.</span></label>
+            <label class="task"><input type="checkbox"><span>Descansa sin intentar ser productivo.</span></label>
+            <button class="day-finish" type="button">Día terminado</button>
+          </article>
+        </div>
+
+        <div class="week-actions">
+          <button class="finish-week" type="button">Terminar semana</button>
+          <button class="reset-week" type="button">Reiniciar semana</button>
+        </div>
+
+        <div class="week-message" hidden>
+          <h2>¡Semana completada!</h2>
+          <p>Hiciste espacio para respirar y bajar la carga. Cuidar tu calma también es avanzar.</p>
+        </div>
+      </section>
+
+      <section class="screen routine-screen active-screen" id="rutina-activo">
+        <div class="routine-top">
+          <span>...Rutina Mood Activo...</span>
+          <button class="back-button" id="volver-rutina-activo" type="button">Volver a actividades</button>
+        </div>
+
+        <h1 class="routine-title">Tu semana para canalizar el power</h1>
+
+        <div class="routine-grid">
+          <article class="day-card">
+            <h2>Día 1</h2><h3>Arranque físico</h3><p>~30 min</p>
+            <label class="task"><input type="checkbox"><span>Calienta durante cinco minutos.</span></label>
+            <label class="task"><input type="checkbox"><span>Haz una rutina corta de piernas.</span></label>
+            <label class="task"><input type="checkbox"><span>Registra cómo quedó tu energía.</span></label>
+            <button class="day-finish" type="button">Día terminado</button>
+          </article>
+          <article class="day-card">
+            <h2>Día 2</h2><h3>Reto exterior</h3><p>~40 min</p>
+            <label class="task"><input type="checkbox"><span>Visita un parque o espacio abierto.</span></label>
+            <label class="task"><input type="checkbox"><span>Camina rápido o trota 20 minutos.</span></label>
+            <label class="task"><input type="checkbox"><span>Hidrátate al terminar.</span></label>
+            <button class="day-finish" type="button">Día terminado</button>
+          </article>
+          <article class="day-card">
+            <h2>Día 3</h2><h3>Movimiento creativo</h3><p>~35 min</p>
+            <label class="task"><input type="checkbox"><span>Pon una playlist energética.</span></label>
+            <label class="task"><input type="checkbox"><span>Baila o muévete durante 15 minutos.</span></label>
+            <label class="task"><input type="checkbox"><span>Prueba un ejercicio nuevo.</span></label>
+            <button class="day-finish" type="button">Día terminado</button>
+          </article>
+          <article class="day-card">
+            <h2>Día 4</h2><h3>Power compartido</h3><p>~45 min</p>
+            <label class="task"><input type="checkbox"><span>Invita a alguien a moverse contigo.</span></label>
+            <label class="task"><input type="checkbox"><span>Juega o practica un deporte.</span></label>
+            <label class="task"><input type="checkbox"><span>Comparte el logro del día.</span></label>
+            <button class="day-finish" type="button">Día terminado</button>
+          </article>
+          <article class="day-card">
+            <h2>Día 5</h2><h3>Cierre activo</h3><p>~30 min</p>
+            <label class="task"><input type="checkbox"><span>Repite tu actividad favorita.</span></label>
+            <label class="task"><input type="checkbox"><span>Estira con calma al finalizar.</span></label>
+            <label class="task"><input type="checkbox"><span>Define tu próximo reto físico.</span></label>
+            <button class="day-finish" type="button">Día terminado</button>
+          </article>
+        </div>
+
+        <div class="week-actions">
+          <button class="finish-week" type="button">Terminar semana</button>
+          <button class="reset-week" type="button">Reiniciar semana</button>
+        </div>
+
+        <div class="week-message" hidden>
+          <h2>¡Semana completada!</h2>
+          <p>Convertiste tu energía en movimiento y experiencias. Tu power vale más cuando lo disfrutas y lo cuidas.</p>
+        </div>
+      </section>
+
+      <section class="screen routine-screen productive-screen" id="rutina-productivo">
+        <div class="routine-top">
+          <span>...Rutina Mood Productivo...</span>
+          <button class="back-button" id="volver-rutina-productivo" type="button">Volver a actividades</button>
+        </div>
+
+        <h1 class="routine-title">Tu semana para avanzar con intención</h1>
+
+        <div class="routine-grid">
+          <article class="day-card">
+            <h2>Día 1</h2><h3>Prioridad clara</h3><p>~30 min</p>
+            <label class="task"><input type="checkbox"><span>Escribe tres tareas importantes.</span></label>
+            <label class="task"><input type="checkbox"><span>Elige la prioridad número uno.</span></label>
+            <label class="task"><input type="checkbox"><span>Trabaja 15 minutos sin interrupción.</span></label>
+            <button class="day-finish" type="button">Día terminado</button>
+          </article>
+          <article class="day-card">
+            <h2>Día 2</h2><h3>Orden digital</h3><p>~35 min</p>
+            <label class="task"><input type="checkbox"><span>Organiza archivos o notas pendientes.</span></label>
+            <label class="task"><input type="checkbox"><span>Silencia distracciones durante una sesión.</span></label>
+            <label class="task"><input type="checkbox"><span>Cierra una tarea pequeña.</span></label>
+            <button class="day-finish" type="button">Día terminado</button>
+          </article>
+          <article class="day-card">
+            <h2>Día 3</h2><h3>Trabajo profundo</h3><p>~45 min</p>
+            <label class="task"><input type="checkbox"><span>Define un objetivo concreto.</span></label>
+            <label class="task"><input type="checkbox"><span>Haz dos sesiones de enfoque.</span></label>
+            <label class="task"><input type="checkbox"><span>Anota el avance conseguido.</span></label>
+            <button class="day-finish" type="button">Día terminado</button>
+          </article>
+          <article class="day-card">
+            <h2>Día 4</h2><h3>Aprendizaje útil</h3><p>~40 min</p>
+            <label class="task"><input type="checkbox"><span>Aprende algo útil para tu proyecto.</span></label>
+            <label class="task"><input type="checkbox"><span>Aplica una mejora concreta.</span></label>
+            <label class="task"><input type="checkbox"><span>Explica lo aprendido en pocas líneas.</span></label>
+            <button class="day-finish" type="button">Día terminado</button>
+          </article>
+          <article class="day-card">
+            <h2>Día 5</h2><h3>Cierre y balance</h3><p>~30 min</p>
+            <label class="task"><input type="checkbox"><span>Revisa lo completado en la semana.</span></label>
+            <label class="task"><input type="checkbox"><span>Deja lista tu siguiente prioridad.</span></label>
+            <label class="task"><input type="checkbox"><span>Descansa reconociendo tu avance.</span></label>
+            <button class="day-finish" type="button">Día terminado</button>
+          </article>
+        </div>
+
+        <div class="week-actions">
+          <button class="finish-week" type="button">Terminar semana</button>
+          <button class="reset-week" type="button">Reiniciar semana</button>
+        </div>
+
+        <div class="week-message" hidden>
+          <h2>¡Semana completada!</h2>
+          <p>Tu impulso se convirtió en progreso real. Productividad también es elegir bien dónde poner tu energía.</p>
+        </div>
+      </section>
+
+      <section class="screen routine-screen low-screen" id="rutina-bajoneado">
+        <div class="routine-top">
+          <span>...Rutina Mood Bajoneado...</span>
+          <button class="back-button" id="volver-rutina-bajoneado" type="button">Volver a actividades</button>
+        </div>
+        <h1 class="routine-title">Tu semana de pequeños cuidados</h1>
+        <div class="routine-grid">
+          <article class="day-card"><h2>Día 1</h2><h3>Cuida lo básico</h3><p>~20 min</p>
+            <label class="task"><input type="checkbox"><span>Toma agua y come algo nutritivo.</span></label>
+            <label class="task"><input type="checkbox"><span>Abre la ventana o recibe luz.</span></label>
+            <label class="task"><input type="checkbox"><span>Descansa diez minutos sin culpa.</span></label>
+            <button class="day-finish" type="button">Día terminado</button></article>
+          <article class="day-card"><h2>Día 2</h2><h3>Compañía suave</h3><p>~25 min</p>
+            <label class="task"><input type="checkbox"><span>Envía un mensaje honesto a alguien.</span></label>
+            <label class="task"><input type="checkbox"><span>Escucha música reconfortante.</span></label>
+            <label class="task"><input type="checkbox"><span>Escribe cómo te sientes.</span></label>
+            <button class="day-finish" type="button">Día terminado</button></article>
+          <article class="day-card"><h2>Día 3</h2><h3>Movimiento mínimo</h3><p>~20 min</p>
+            <label class="task"><input type="checkbox"><span>Estírate lentamente.</span></label>
+            <label class="task"><input type="checkbox"><span>Camina cinco o diez minutos.</span></label>
+            <label class="task"><input type="checkbox"><span>Respira aire fresco.</span></label>
+            <button class="day-finish" type="button">Día terminado</button></article>
+          <article class="day-card"><h2>Día 4</h2><h3>Un gusto pequeño</h3><p>~30 min</p>
+            <label class="task"><input type="checkbox"><span>Prepara una bebida que disfrutes.</span></label>
+            <label class="task"><input type="checkbox"><span>Mira algo que te haga sentir bien.</span></label>
+            <label class="task"><input type="checkbox"><span>Reconoce algo que sí lograste.</span></label>
+            <button class="day-finish" type="button">Día terminado</button></article>
+          <article class="day-card"><h2>Día 5</h2><h3>Volver a ti</h3><p>~25 min</p>
+            <label class="task"><input type="checkbox"><span>Revisa qué te dio un poco de calma.</span></label>
+            <label class="task"><input type="checkbox"><span>Planea un cuidado para mañana.</span></label>
+            <label class="task"><input type="checkbox"><span>Háblate con paciencia.</span></label>
+            <button class="day-finish" type="button">Día terminado</button></article>
+        </div>
+        <div class="week-actions">
+          <button class="finish-week" type="button">Terminar semana</button>
+          <button class="reset-week" type="button">Reiniciar semana</button>
+        </div>
+        <div class="week-message" hidden>
+          <h2>¡Semana completada!</h2>
+          <p>Avanzaste incluso en días difíciles. Ir despacio también es avanzar, y cuidarte ya es una victoria.</p>
+        </div>
+      </section>
+
+      <section class="screen routine-screen solo-screen" id="rutina-solo">
+        <div class="routine-top">
+          <span>...Rutina Mood Solo/Sin plan...</span>
+          <button class="back-button" id="volver-rutina-solo" type="button">Volver a actividades</button>
+        </div>
+        <h1 class="routine-title">Tu semana para disfrutar tu tiempo</h1>
+        <div class="routine-grid">
+          <article class="day-card"><h2>Día 1</h2><h3>Plan personal</h3><p>~30 min</p>
+            <label class="task"><input type="checkbox"><span>Elige una actividad que te guste.</span></label>
+            <label class="task"><input type="checkbox"><span>Prepara tu espacio para disfrutarla.</span></label>
+            <label class="task"><input type="checkbox"><span>Hazla sin esperar compañía.</span></label>
+            <button class="day-finish" type="button">Día terminado</button></article>
+          <article class="day-card"><h2>Día 2</h2><h3>Explora cerca</h3><p>~40 min</p>
+            <label class="task"><input type="checkbox"><span>Busca un lugar nuevo cercano.</span></label>
+            <label class="task"><input type="checkbox"><span>Visítalo o planea cuándo ir.</span></label>
+            <label class="task"><input type="checkbox"><span>Guarda un recuerdo del plan.</span></label>
+            <button class="day-finish" type="button">Día terminado</button></article>
+          <article class="day-card"><h2>Día 3</h2><h3>Curiosidad</h3><p>~35 min</p>
+            <label class="task"><input type="checkbox"><span>Prueba una receta o tutorial.</span></label>
+            <label class="task"><input type="checkbox"><span>Aprende un dato o habilidad nueva.</span></label>
+            <label class="task"><input type="checkbox"><span>Comparte lo que descubriste.</span></label>
+            <button class="day-finish" type="button">Día terminado</button></article>
+          <article class="day-card"><h2>Día 4</h2><h3>Conexión elegida</h3><p>~30 min</p>
+            <label class="task"><input type="checkbox"><span>Escribe a alguien que aprecias.</span></label>
+            <label class="task"><input type="checkbox"><span>Invita a un plan futuro.</span></label>
+            <label class="task"><input type="checkbox"><span>Disfruta también tu propio espacio.</span></label>
+            <button class="day-finish" type="button">Día terminado</button></article>
+          <article class="day-card"><h2>Día 5</h2><h3>Cierre con plan</h3><p>~30 min</p>
+            <label class="task"><input type="checkbox"><span>Repite el mejor plan de la semana.</span></label>
+            <label class="task"><input type="checkbox"><span>Anota tres ideas para después.</span></label>
+            <label class="task"><input type="checkbox"><span>Celebra que tomaste la iniciativa.</span></label>
+            <button class="day-finish" type="button">Día terminado</button></article>
+        </div>
+        <div class="week-actions">
+          <button class="finish-week" type="button">Terminar semana</button>
+          <button class="reset-week" type="button">Reiniciar semana</button>
+        </div>
+        <div class="week-message" hidden>
+          <h2>¡Semana completada!</h2>
+          <p>Descubriste que tu tiempo también puede estar lleno de planes, curiosidad y momentos que valen la pena.</p>
+        </div>
+      </section>
+    </main>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>

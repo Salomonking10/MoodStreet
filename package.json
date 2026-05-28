@@ -1,0 +1,21 @@
+{
+  "name": "moodstreet_proyect",
+  "version": "1.0.0",
+  "description": "Aplicacion MoodStreet con backend Node.js y MySQL.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "check": "node --check server.js && node --check public/script.js && node --check config/db.js && node --check controllers/authController.js && node --check controllers/progresoController.js && node --check routes/authRoutes.js && node --check routes/progresoRoutes.js"
+  },
+  "keywords": [],
+  "author": "Salomon Tamayo Sanchez",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "express": "^5.2.1",
+    "express-session": "^1.19.0",
+    "mysql2": "^3.22.4",
+    "pptxgenjs": "^4.0.1"
+  }
+}
