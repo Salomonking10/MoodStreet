@@ -562,6 +562,16 @@ const formularioLogin = document.getElementById("form-login");
 const formularioRegistro = document.getElementById("form-registro");
 const botonMostrarLogin = document.getElementById("mostrar-login");
 const botonMostrarRegistro = document.getElementById("mostrar-registro");
+const supabaseConfig = window.SUPABASE_CONFIG || {};
+const supabaseListo =
+  window.supabase &&
+  supabaseConfig.url &&
+  supabaseConfig.anonKey &&
+  !supabaseConfig.url.includes("PEGA_AQUI") &&
+  !supabaseConfig.anonKey.includes("PEGA_AQUI");
+const supabaseCliente = supabaseListo
+  ? window.supabase.createClient(supabaseConfig.url, supabaseConfig.anonKey)
+  : null;
 
 async function consultarApi(ruta, opciones) {
   const respuesta = await fetch(ruta, opciones);
@@ -586,9 +596,17 @@ function mostrarModoAcceso(modo) {
 
 function mostrarUsuario(usuario) {
   usuarioActual = usuario;
-  nombreSesion.textContent = usuario.nombre;
+  nombreSesion.textContent = usuario.nombre || usuario.correo || "usuario";
   cajaSesion.hidden = false;
   capaAcceso.hidden = true;
+}
+
+function crearUsuarioSupabase(usuario) {
+  return {
+    id: usuario.id,
+    nombre: (usuario.user_metadata && usuario.user_metadata.nombre) || usuario.email,
+    correo: usuario.email
+  };
 }
 
 function ocultarUsuario() {
@@ -601,6 +619,30 @@ function ocultarUsuario() {
 }
 
 async function cargarProgreso() {
+  if (supabaseCliente) {
+    const respuesta = await supabaseCliente
+      .from("progreso")
+      .select("mood,tareas,completado");
+
+    if (respuesta.error) {
+      throw new Error(respuesta.error.message);
+    }
+
+    const progreso = {};
+    respuesta.data.forEach(function (fila) {
+      progreso[fila.mood] = {
+        tareas: fila.tareas || [],
+        semana_completa: fila.completado
+      };
+    });
+
+    Object.keys(rutinasConfiguradas).forEach(function (mood) {
+      rutinasConfiguradas[mood].cargar(progreso[mood] || null);
+    });
+
+    return;
+  }
+
   const datos = await consultarApi("/api/progreso");
 
   Object.keys(rutinasConfiguradas).forEach(function (mood) {
@@ -614,6 +656,25 @@ async function guardarProgreso(mood, tareas, semanaCompleta) {
   }
 
   try {
+    if (supabaseCliente) {
+      const respuesta = await supabaseCliente.from("progreso").upsert(
+        {
+          usuario_id: usuarioActual.id,
+          mood: mood,
+          tareas: tareas,
+          completado: semanaCompleta,
+          fecha_actualizacion: new Date().toISOString().slice(0, 10)
+        },
+        { onConflict: "usuario_id,mood" }
+      );
+
+      if (respuesta.error) {
+        throw new Error(respuesta.error.message);
+      }
+
+      return;
+    }
+
     await consultarApi("/api/progreso", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -630,6 +691,19 @@ async function guardarProgreso(mood, tareas, semanaCompleta) {
 
 async function iniciarAplicacion() {
   try {
+    if (supabaseCliente) {
+      const respuesta = await supabaseCliente.auth.getUser();
+
+      if (respuesta.error || !respuesta.data.user) {
+        ocultarUsuario();
+        return;
+      }
+
+      mostrarUsuario(crearUsuarioSupabase(respuesta.data.user));
+      await cargarProgreso();
+      return;
+    }
+
     const datos = await consultarApi("/api/autenticacion");
 
     if (datos.usuario) {
@@ -640,7 +714,9 @@ async function iniciarAplicacion() {
     }
   } catch (error) {
     ocultarUsuario();
-    mensajeAcceso.textContent = "Abre la app desde http://localhost:3001 para usar el inicio de sesión.";
+    mensajeAcceso.textContent = supabaseCliente
+      ? error.message
+      : "Abre la app desde http://localhost:3001 para usar el inicio de sesión.";
   }
 }
 
@@ -652,6 +728,43 @@ async function enviarAcceso(evento, accion) {
   datos.accion = accion;
 
   try {
+    if (supabaseCliente) {
+      let respuesta;
+
+      if (accion === "registro") {
+        respuesta = await supabaseCliente.auth.signUp({
+          email: datos.correo,
+          password: datos.clave,
+          options: {
+            data: {
+              nombre: datos.nombre
+            }
+          }
+        });
+      } else {
+        respuesta = await supabaseCliente.auth.signInWithPassword({
+          email: datos.correo,
+          password: datos.clave
+        });
+      }
+
+      if (respuesta.error) {
+        throw new Error(respuesta.error.message);
+      }
+
+      if (!respuesta.data.session) {
+        formulario.reset();
+        mostrarModoAcceso("login");
+        mensajeAcceso.textContent = "Cuenta creada. Revisa tu correo o desactiva la confirmación por email en Supabase para la demo.";
+        return;
+      }
+
+      formulario.reset();
+      mostrarUsuario(crearUsuarioSupabase(respuesta.data.user));
+      await cargarProgreso();
+      return;
+    }
+
     const respuesta = await consultarApi("/api/autenticacion", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -684,11 +797,15 @@ formularioRegistro.addEventListener("submit", function (evento) {
 
 document.getElementById("cerrar-sesion").addEventListener("click", async function () {
   try {
-    await consultarApi("/api/autenticacion", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ accion: "logout" })
-    });
+    if (supabaseCliente) {
+      await supabaseCliente.auth.signOut();
+    } else {
+      await consultarApi("/api/autenticacion", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ accion: "logout" })
+      });
+    }
   } finally {
     ocultarUsuario();
     mostrarModoAcceso("login");

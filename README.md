@@ -1,5 +1,27 @@
 # MoodStreet con Node.js y MySQL
 
+## Despliegue con Supabase
+
+Para Netlify o Vercel se usa el frontend estatico de `public/` y Supabase como base de datos.
+
+1. Crea un proyecto en Supabase.
+2. Abre el SQL Editor de Supabase y ejecuta el archivo `supabase.sql`.
+3. En Supabase, copia `Project URL` y `anon public key`.
+4. Pega esos datos en `public/config.js`.
+5. Para la demo del curso, puedes desactivar la confirmacion de correo en Authentication para que el registro entre de una vez.
+
+No pegues la llave `service_role` en `public/config.js`; esa llave es privada.
+
+En Netlify:
+
+- Build command: dejar vacio.
+- Publish directory: `public`.
+
+En Vercel:
+
+- Framework Preset: Other.
+- Output Directory: `public`.
+
 ## Acceso local
 
 1. Inicia `MySQL` desde XAMPP.
@@ -16,6 +38,8 @@ npm start
 
 No uses el archivo `index.html` directamente ni `http://localhost/MoodStreet/`.
 El registro y el progreso ahora son atendidos por el servidor Node.js.
+
+Si `public/config.js` tiene datos reales de Supabase, la app usa Supabase. Si tiene los textos de ejemplo, la app usa el backend local de Node.js.
 
 ## Base de datos
 
@@ -38,6 +62,7 @@ El campo `contrasena` se almacena protegido mediante `bcrypt`; no se guarda el t
 - `routes/`: rutas del backend.
 - `server.js`: archivo principal del servidor.
 - `database.sql`: script para crear la base de datos.
+- `supabase.sql`: script para crear la tabla de progreso en Supabase.
 
 ## Backend Node.js
 
