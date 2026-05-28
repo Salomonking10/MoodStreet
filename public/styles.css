@@ -14,6 +14,8 @@
 
 html {
   height: 100%;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 body {
@@ -44,6 +46,12 @@ body::before {
 button,
 a {
   font: inherit;
+}
+
+input,
+textarea,
+select {
+  font-size: 16px;
 }
 
 button {
@@ -2816,5 +2824,17 @@ button {
 
   .week-message p {
     font-size: 0.5rem;
+  }
+}
+
+@media (max-width: 720px) {
+  input,
+  textarea,
+  select,
+  .auth-form input,
+  .location-box input,
+  .journal-box textarea,
+  .todo-form input {
+    font-size: 16px !important;
   }
 }
